@@ -28,42 +28,51 @@ The original Superpowers is a disciplined, production-grade workflow plugin. Thi
 | **`godot-workflow`** | GDScript and C# patterns, scene/node architecture, signals, resources, testing (GUT/GdUnit4Net), Godot CLI |
 | **`dotnet-csharp-workflow`** | dotnet CLI, solution structure, NuGet/CPM, MSBuild, nullable types, modern C# features, Godot .csproj setup |
 | **`wpf-toolset-patterns`** | MVVM with CommunityToolkit.Mvvm, data binding, property inspector, tile map canvas, scene tree, undo/redo, file I/O, WPF-to-Godot data bridge |
+| **`iterating-on-feedback`** | Triage and rapid iteration after playtesting — fix/tweak/explore/ignore classification, iteration commit format |
+| **`prototype-to-production`** | Deliberate promotion of throwaway code to foundation — promote vs. rewrite decision, code audit, rewrite-alongside pattern |
 
 ### Modified
 
 | Skill | Change |
 |---|---|
-| **`brainstorming`** | Now includes a throwaway-vs-foundation scope check first. Throwaway prototypes skip all planning. |
+| **`brainstorming`** | Always asks throwaway-vs-foundation (never self-determines). Multi-approach proposals with reasoning for tech decisions. Opt-out confirmation before planning. |
+| **`writing-plans`** | Gates on brainstorming first. Kebab-case file naming enforced. Architecture field requires headless testability statement. Plan format includes Progress checkboxes for cross-session resume. Scope expansion must be surfaced. |
+| **`executing-plans`** | Invokes `writing-plans` if no plan file exists. Plan-referenced commit format (`[plan: feature-name, task-N]`). Conventional commits when no plan. Resume trusts prior completion via plan file checkboxes. |
+| **`systematic-debugging`** | Replaced macOS codesign CI example with Godot/C# signal-tracing example. Phase 4 Step 1 adds visual/physics exception — document reproduction steps instead of failing test. |
+| **`using-superpowers`** | Announces active skill before following it. Bug fast-path — if user reports a bug, invoke `systematic-debugging` directly, skip brainstorming. Workflow sequence flowchart added. |
+| **`godot-workflow`** | Game exports target Windows/Mac/Linux. WPF toolset is Windows-only dev toolset, not part of game build. |
 | **`test-driven-development`** | Added explicit skip list: visual/rendering output, physics feel, Godot scene wiring, throwaway spikes |
-| **`using-superpowers`** | Documents this fork's philosophy and priority order |
 
 ---
 
 ## How It Works
 
-Skills are markdown files that tell Claude *how* to approach a task. A SessionStart hook bootstraps the skill system at the start of every session. Claude checks for applicable skills before taking any action and follows them automatically — you don't invoke skills manually.
+Skills are markdown files that tell Claude *how* to approach a task. A SessionStart hook bootstraps the skill system at the start of every session. Claude checks for applicable skills before taking any action, **announces which skill it's using**, and follows it automatically — you don't invoke skills manually.
 
 ### The Fast Prototype Flow
 
 ```
 You describe what to build
         ↓
-brainstorming  →  Is this throwaway or foundation?
+brainstorming  →  Asks: throwaway or foundation?
                   Throwaway: just build.
-                  Foundation: one-paragraph spike brief, confirm, then plan.
+                  Foundation: propose approach (with reasoning), confirm, then plan.
         ↓
-writing-plans  →  Task breakdown saved to docs/plans/
-                  (15-30 min tasks, not 2-5 min micro-steps)
+writing-plans  →  Task breakdown saved to docs/plans/YYYY-MM-DD-feature-name.md
+                  (15-30 min tasks, progress checkboxes for resume)
         ↓
-executing-plans →  Implement each task inline, verify, commit, move on
+executing-plans →  Implement each task inline, verify, commit, check off in plan
         ↓
 finishing-a-development-branch  →  Merge / push PR / keep / discard
 ```
 
-Hit a bug → `systematic-debugging` kicks in.
-Writing game logic or a viewmodel → `test-driven-development` applies.
-Working in Godot → `godot-workflow` guides architecture and pattern choices.
-Working on a WPF toolset → `wpf-toolset-patterns` guides MVVM, canvas, undo/redo.
+Interrupts that can happen at any point:
+- **Report a bug** → `systematic-debugging` kicks in directly (skips brainstorming)
+- **After playtesting** → `iterating-on-feedback` triages changes
+- **Throwaway survived** → `prototype-to-production` promotes it properly
+- Writing game logic or a viewmodel → `test-driven-development` applies
+- Working in Godot → `godot-workflow` guides architecture and pattern choices
+- Working on a WPF toolset → `wpf-toolset-patterns` guides MVVM, canvas, undo/redo
 
 ---
 
@@ -82,7 +91,7 @@ git clone https://github.com/reckhou/superpowers path/to/superpowers
 /plugin install path/to/superpowers
 ```
 
-### Manual Installation (Any Platform)
+### Manual Installation
 
 1. Clone this repository:
    ```bash
@@ -100,7 +109,7 @@ git clone https://github.com/reckhou/superpowers path/to/superpowers
 
 ### Verify Installation
 
-Start a new session and ask Claude to build something. It should invoke `brainstorming` first, ask whether the work is throwaway or foundation, then proceed accordingly.
+Start a new session and ask Claude to build something. It should announce `Using superpowers:brainstorming`, ask whether the work is throwaway or foundation, then proceed accordingly.
 
 Or explicitly check: ask Claude *"what skills do you have available?"* — it should list the superpowers skills.
 
@@ -129,22 +138,23 @@ Restart your Claude Code session to pick up changes.
 
 | Skill | What it does |
 |---|---|
-| `brainstorming` | Throwaway/foundation check → spike brief → invoke writing-plans |
-| `writing-plans` | Task breakdown (15-30 min tasks) → saved to `docs/plans/` |
-| `executing-plans` | Primary execution path — inline, task by task, verify and commit |
+| `brainstorming` | Always asks throwaway/foundation → propose approach with reasoning → invoke writing-plans |
+| `writing-plans` | Task breakdown (15-30 min tasks) → progress checkboxes → saved to `docs/plans/` |
+| `executing-plans` | Primary execution path — inline, task by task, verify, commit, check off in plan |
 | `finishing-a-development-branch` | Merge / push PR / keep / discard + cleanup |
+| `iterating-on-feedback` | Triage playtest feedback → fix/tweak/explore/ignore → rapid iteration loop |
+| `prototype-to-production` | Promote a surviving throwaway to foundation code deliberately |
 
 ### Discipline Skills (Kept, Trimmed)
 
 | Skill | What it does |
 |---|---|
-| `systematic-debugging` | 4-phase root cause investigation before any fix |
+| `systematic-debugging` | 4-phase root cause investigation before any fix — invoked directly on bug reports |
 | `verification-before-completion` | Run the command, read the output, then claim success |
 | `test-driven-development` | RED-GREEN-REFACTOR for logic and systems (not visual/physics) |
 | `requesting-code-review` | On-demand code review via subagent |
 | `receiving-code-review` | How to handle review feedback |
 | `dispatching-parallel-agents` | Parallel independent task delegation |
-| `finishing-a-development-branch` | Post-implementation merge/PR workflow |
 
 ### Optional / Heavy (Use When Warranted)
 
@@ -164,14 +174,16 @@ superpowers/
 │   ├── hooks.json                   # Claude Code SessionStart hook
 │   └── session-start                # Bootstrap script
 ├── skills/
-│   ├── brainstorming/               # Modified: spike + scope check
+│   ├── brainstorming/               # Modified: always ask scope, reasoning, opt-out confirm
 │   ├── dotnet-csharp-workflow/      # New: .NET/C# tooling
-│   ├── godot-workflow/              # New: Godot GDScript + C#
-│   ├── wpf-toolset-patterns/        # New: WPF game editors
-│   ├── executing-plans/             # Modified: primary execution path
-│   ├── writing-plans/               # Modified: 15-30 min tasks
+│   ├── godot-workflow/              # New: Godot GDScript + C# (game: Win/Mac/Linux)
+│   ├── wpf-toolset-patterns/        # New: WPF game editors (Windows-only toolset)
+│   ├── iterating-on-feedback/       # New: post-playtest iteration loop
+│   ├── prototype-to-production/     # New: promote throwaway to foundation
+│   ├── executing-plans/             # Modified: plan-ref commits, resume via checkboxes
+│   ├── writing-plans/               # Modified: brainstorm gate, headless testability, progress section
 │   ├── test-driven-development/     # Modified: logic only, not visual/physics
-│   ├── systematic-debugging/
+│   ├── systematic-debugging/        # Modified: Godot/C# examples, visual/physics exception
 │   ├── verification-before-completion/
 │   ├── subagent-driven-development/ # Modified: optional, no mandatory reviews
 │   ├── using-git-worktrees/         # Modified: optional for prototypes
@@ -179,7 +191,7 @@ superpowers/
 │   ├── receiving-code-review/
 │   ├── dispatching-parallel-agents/
 │   ├── finishing-a-development-branch/
-│   └── using-superpowers/           # Modified: documents fork philosophy
+│   └── using-superpowers/           # Modified: announce skill, bug fast-path, workflow flowchart
 ├── agents/
 │   └── code-reviewer.md
 └── commands/                        # Deprecated upstream commands
