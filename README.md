@@ -81,13 +81,13 @@ Interrupts that can happen at any point:
 ### Claude Code (Direct from GitHub)
 
 ```bash
-/plugin install github:reckhou/superpowers
+/plugin install github:reckhou/superpowers-fastgameprototyping
 ```
 
 Or clone and install from local path:
 
 ```bash
-git clone https://github.com/reckhou/superpowers path/to/superpowers
+git clone https://github.com/reckhou/superpowers-fastgameprototyping path/to/superpowers
 /plugin install path/to/superpowers
 ```
 
@@ -95,7 +95,7 @@ git clone https://github.com/reckhou/superpowers path/to/superpowers
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/reckhou/superpowers
+   git clone https://github.com/reckhou/superpowers-fastgameprototyping
    ```
 
 2. In your Claude Code settings (`~/.claude/settings.json`), add the plugin path:
