@@ -86,26 +86,22 @@ You MUST complete each phase before proceeding to the next.
    THEN investigate that specific component
    ```
 
-   **Example (multi-layer system):**
+   **Example (Godot + C# multi-layer system):**
    ```bash
-   # Layer 1: Workflow
-   echo "=== Secrets available in workflow: ==="
-   echo "IDENTITY: ${IDENTITY:+SET}${IDENTITY:-UNSET}"
+   # Layer 1: Signal emitter
+   GD.Print($"=== Signal emitted: item_collected, id={itemId}")
 
-   # Layer 2: Build script
-   echo "=== Env vars in build script: ==="
-   env | grep IDENTITY || echo "IDENTITY not in environment"
+   # Layer 2: Signal receiver
+   GD.Print($"=== OnItemCollected called: id={id}, inventory null={_inventory == null}")
 
-   # Layer 3: Signing script
-   echo "=== Keychain state: ==="
-   security list-keychains
-   security find-identity -v
+   # Layer 3: Inventory system
+   GD.Print($"=== AddItem: slots={_slots.Count}, item={item?.Name ?? "null"}")
 
-   # Layer 4: Actual signing
-   codesign --sign "$IDENTITY" --verbose=4 "$APP"
+   # Layer 4: UI refresh
+   GD.Print($"=== RefreshUI called, item count={_inventory.Items.Count}")
    ```
 
-   **This reveals:** Which layer fails (secrets → workflow ✓, workflow → build ✗)
+   **This reveals:** Which layer fails (signal emitted ✓, receiver called ✓, inventory null ✗)
 
 5. **Trace Data Flow**
 
@@ -178,6 +174,8 @@ You MUST complete each phase before proceeding to the next.
    - MUST have before fixing
    - Use the `superpowers:test-driven-development` skill for writing proper failing tests
 
+   **Exception — visual/physics bugs:** If TDD is not applicable (rendering issues, physics feel, Godot scene setup), document the reproduction steps instead: exact inputs, what happens, what should happen. This substitutes for the failing test — verify the fix resolves the described behavior.
+
 2. **Implement Single Fix**
    - Address the root cause identified
    - ONE change at a time
@@ -231,7 +229,7 @@ If you catch yourself thinking:
 
 **If 3+ fixes failed:** Question the architecture (see Phase 4.5)
 
-## your human partner's Signals You're Doing It Wrong
+## Your Human Partner's Signals You're Doing It Wrong
 
 **Watch for these redirections:**
 - "Is that not happening?" - You assumed without verifying

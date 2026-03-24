@@ -16,7 +16,6 @@ For detailed code patterns and full implementations, open `resources/implementat
 ### Use GDScript when
 - Prototyping — no compile step, hot-reload, tighter editor integration
 - Scene-local logic that won't be shared with external tools
-- **Web export is required** — C# cannot export to Web/WASM. Hard blocker, not a roadmap item.
 - You need GDExtension (C/C++ plugins) — C# cannot call them directly
 
 ### Use C# when
@@ -34,13 +33,15 @@ When mixing: communicate via signals and autoloads only. Don't tightly couple ac
 - **C# is not always faster.** Every engine API call (e.g., `node.Position`) crosses the C#-to-C++ boundary via Variant marshalling. In tight loops, cache these in local variables.
 - Use .NET collections (`List<T>`, `Dictionary<K,V>`) for internal C# logic. Only use Godot's `Array`/`Dictionary` when calling engine APIs.
 
-### Platform Support Matrix (Godot 4.4)
+### Game Export Platform Support (Godot 4.4)
 | Platform | GDScript | C# |
 |---|---|---|
-| Desktop (Win/Mac/Linux) | ✅ | ✅ |
-| Android | ✅ | Experimental |
-| iOS | ✅ | Experimental |
+| Windows / Mac / Linux | ✅ | ✅ |
 | Web | ✅ | ❌ Not supported |
+
+**The game exports to Windows, Mac, and Linux.** The WPF game tools are Windows-only and not part of the game build — they run separately as a dev toolset.
+
+Note: C# cannot export to Web/WASM — hard blocker if Web is a target. Decide this before committing to C# architecture.
 
 ---
 
@@ -378,9 +379,10 @@ godot --headless --quit
 # Run a specific script
 godot --headless -s res://tools/generate_map.gd
 
-# Export builds
+# Export builds (game ships to Win/Mac/Linux; WPF tools are Windows-only dev toolset)
 godot --export-release "Windows Desktop" ./build/game.exe
-godot --export-debug "Linux/X11" ./build/game.x86_64
+godot --export-release "macOS" ./build/game.dmg
+godot --export-release "Linux/X11" ./build/game.x86_64
 
 # Import assets without launching editor
 godot --headless --import

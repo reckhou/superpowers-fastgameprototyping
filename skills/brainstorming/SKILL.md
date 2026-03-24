@@ -11,11 +11,13 @@ Rapidly align on what you're building and how, then move immediately to implemen
 
 ---
 
-## Step 1: Scope Check — Throwaway or Foundation?
+## Step 1: Scope Check — Always Ask
 
-Before anything else, answer this:
+**Always ask the user explicitly:**
 
-**Is this throwaway or foundation code?**
+> "Is this throwaway (spike/experiment, will be deleted or rewritten) or foundation (shared system, persisted data, core loop)?"
+
+Use this table to frame the question if it helps:
 
 | Throwaway | Foundation |
 |---|---|
@@ -36,14 +38,38 @@ If a throwaway prototype survives into a second session, stop. Plan it properly 
 ## Step 2: Spike Brief (Foundation Code)
 
 1. **Glance at project context** — existing files, structure, recent work (2 minutes max)
-2. **Identify the one real unknown** — if anything is genuinely ambiguous, ask ONE question
-3. **Propose your approach** — one sentence on architecture, one on tech choice if relevant
-4. **Get a thumbs up** — confirm or adjust, then invoke `writing-plans`
+2. **Propose your approach** — see below for how to handle tech decisions
+3. **Get confirmation** — user confirms or adjusts direction, then invoke `writing-plans`
+
+### Proposing an Approach
+
+Always explain your reasoning. Don't just state the decision — state why it's the right call for this prototype.
+
+**For straightforward cases (one obvious approach):**
+- State the approach with a 1-2 sentence explanation of why it fits
+- Note any trade-off or risk worth flagging
+
+**For genuine tech decisions (multiple viable options):**
+- Present 2-3 options with one-line pros/cons each
+- State your recommendation and explain why
+- Invite the user to weigh in before proceeding
+
+Example:
+```
+Option A: GDScript scene script — fast, no compile step, enough for this scope
+Option B: C# + autoload — better if this system will be shared with the WPF tool
+
+Recommendation: Option A, since this is self-contained to the scene.
+Your call if you expect this to grow.
+```
+
+**For scope or architecture unknowns:**
+- Ask ONE focused question before proposing
+- Don't ask multiple questions in sequence
 
 ## What to Skip
 
-- Multiple clarifying questions in sequence
-- 2-3 approach comparisons with trade-offs (just pick the right one and state why)
+- Multiple clarifying questions in sequence (ask ONE if genuinely needed)
 - Written spec documents
 - Spec review loops
 - Waiting for approval of a design document
@@ -56,10 +82,11 @@ If the request spans multiple independent systems (e.g., "build an editor with a
 
 ```
 Building: [what]
-Approach: [how, one sentence]
+Approach: [how — with reasoning]
+[If tech decision: Option A / Option B / Recommendation: X because Y]
 [Optional: one trade-off or risk worth noting]
 
-Ready to write the plan — any changes?
+Starting the plan — say stop if you want changes.
 ```
 
-After confirmation (or if no changes needed), immediately invoke `writing-plans`.
+After confirmation (or no objection), immediately invoke `writing-plans`.
