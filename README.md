@@ -78,31 +78,16 @@ Interrupts that can happen at any point:
 
 ## Installation
 
-### Claude Code (Direct from GitHub)
+### Claude Code
 
-```bash
-/plugin install github:reckhou/superpowers-fastgameprototyping
-```
-
-Or clone and install from local path:
-
-```bash
-git clone https://github.com/reckhou/superpowers-fastgameprototyping path/to/superpowers
-/plugin install path/to/superpowers
-```
-
-### Manual Installation
-
-1. Clone this repository:
+1. Clone the repository:
    ```bash
    git clone https://github.com/reckhou/superpowers-fastgameprototyping
    ```
 
-2. In your Claude Code settings (`~/.claude/settings.json`), add the plugin path:
-   ```json
-   {
-     "plugins": ["path/to/superpowers"]
-   }
+2. Install the plugin from the local path:
+   ```bash
+   /plugin install path/to/superpowers-fastgameprototyping
    ```
 
 3. Start a new session. The SessionStart hook will bootstrap the skill system automatically.
@@ -116,7 +101,7 @@ Or explicitly check: ask Claude *"what skills do you have available?"* — it sh
 ### Updating
 
 ```bash
-cd path/to/superpowers
+cd path/to/superpowers-fastgameprototyping
 git pull
 ```
 
