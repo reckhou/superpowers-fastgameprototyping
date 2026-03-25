@@ -80,34 +80,17 @@ Interrupts that can happen at any point:
 
 ### Claude Code
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/reckhou/superpowers-fastgameprototyping
-   ```
+```
+/plugin -> Marketplaces -> Add Marketplace -> reckhou/superpowers-fastgameprototyping
+```
 
-2. Install the plugin from the local path:
-   ```bash
-   /plugin install path/to/superpowers-fastgameprototyping
-   ```
-
-3. Start a new session. The SessionStart hook will bootstrap the skill system automatically.
+Start a new session. The SessionStart hook will bootstrap the skill system automatically.
 
 ### Verify Installation
 
 Start a new session and ask Claude to build something. It should announce `Using superpowers:brainstorming`, ask whether the work is throwaway or foundation, then proceed accordingly.
 
 Or explicitly check: ask Claude *"what skills do you have available?"* — it should list the superpowers skills.
-
-### Updating
-
-```bash
-cd path/to/superpowers-fastgameprototyping
-git pull
-```
-
-Restart your Claude Code session to pick up changes.
-
----
 
 ## Skills Reference
 
