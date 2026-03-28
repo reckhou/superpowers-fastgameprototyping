@@ -114,6 +114,28 @@ Ask this during planning: *Can this system be driven without a player sitting at
 
 ---
 
+## No Placeholders
+
+Every step must contain the actual content an engineer needs. These are **plan failures** — never write them:
+- "TBD", "TODO", "implement later", "fill in details"
+- "Add appropriate error handling" / "add validation" / "handle edge cases"
+- "Write tests for the above" (without actual test code)
+- "Similar to Task N" (repeat the code — the engineer may be reading tasks out of order)
+- Steps that describe what to do without showing how (code blocks required for code steps)
+- References to types, functions, or methods not defined in any task
+
+## Self-Review
+
+After writing the complete plan, check it yourself before handing off. Not a subagent dispatch — just a quick pass with fresh eyes.
+
+**1. Spec coverage:** Skim each requirement from brainstorming/scope check. Can you point to a task that implements it? Note any gaps and add tasks.
+
+**2. Placeholder scan:** Search for any of the failure patterns from "No Placeholders" above. Fix them inline.
+
+**3. Type consistency:** Do the types, method signatures, and property names used in later tasks match what was defined in earlier tasks? A function called `ClearLayers()` in Task 3 but `ClearFullLayers()` in Task 7 is a bug waiting to happen.
+
+Fix issues inline. No need to re-review after fixing — just move on to the execution handoff.
+
 ## Remember
 
 - Exact file paths
