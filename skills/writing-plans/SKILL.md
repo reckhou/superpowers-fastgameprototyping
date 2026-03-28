@@ -7,7 +7,7 @@ description: Use when you have a clear idea of what to build and need a task bre
 
 ## Overview
 
-Write a focused implementation plan broken into concrete tasks. Each task should be 15-30 minutes of work — enough to make real progress without being a full feature dump.
+Write a focused implementation plan broken into concrete tasks. Aim for 1-3 tasks per feature — each task is one logical unit of work that may span multiple related files.
 
 **Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
 
@@ -38,15 +38,14 @@ If you discover during planning that the scope is larger than expected (many mor
 
 ## Task Granularity
 
-**Each task is one meaningful unit of work (15-30 minutes):**
-- Implement a component or system
-- Wire up integration between two pieces
-- Add a scene/node setup in Godot
-- Write a WPF view + viewmodel pair
+**Each task is one logical feature unit (typically 1-3 tasks per feature):**
+- Group related files together — a view, its viewmodel, and DI wiring are one task, not three
+- A task may touch multiple files if they are part of the same logical change
+- Aim for the fewest tasks that still represent coherent, verifiable units of work
 
-Tasks should produce something runnable or testable when complete. Avoid splitting at the micro-step level (no separate "write test", "run test", "write code" steps unless TDD is explicitly required).
+Tasks should produce something runnable or testable when complete. Avoid splitting at the file or method level — one task per file is too granular.
 
-**If a task feels too large** (you'd need to describe more than ~5 steps to implement it), split it into two tasks.
+**If a task feels too large** (you'd need to describe more than ~5 loosely related systems to implement it), split it into two tasks.
 
 **If tasks depend on each other**, note it explicitly: `**Depends on:** Task 2`.
 
