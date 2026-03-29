@@ -23,7 +23,9 @@ Scan conversation history. If the user has already stated an API mode preference
 
 ### Step 2: Check for Custom API Config
 
-Read these files in order (first `planExecution` key found wins):
+**IMPORTANT: The config file is `settings.json`, NOT `config.json`.** Do NOT search for or read `config.json` — that file does not exist in Claude Code.
+
+Use the Read tool to check these exact paths in order (first `planExecution` key found wins):
 1. `.claude/settings.json` in the project root (project-scoped — highest priority)
 2. Platform-appropriate global settings:
    - **Windows**: use Bash to run `echo "$USERPROFILE"` to get the home directory, then Read `<result>/.claude/settings.json`
