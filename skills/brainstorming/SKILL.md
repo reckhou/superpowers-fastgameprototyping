@@ -94,3 +94,39 @@ After presenting the brief, **stop and wait for explicit user confirmation** bef
 > "Happy with this direction? Any changes before I write the plan?"
 
 Only invoke `writing-plans` once the user confirms (or explicitly says to proceed).
+
+---
+
+## Decision Log (Brainstorming Phase)
+
+Once the user confirms direction, **before invoking `writing-plans`**, write a draft decision log to:
+
+```
+docs/decisions/YYYY-MM-DD-<feature-name>-decisions.md
+```
+
+Use the same date and feature name slug as the plan file will use.
+
+**Capture every decision made during brainstorming** — scope classification, tech choices, and any rejected alternatives:
+
+```markdown
+# Decision Log: [Feature Name]
+
+## Brainstorming Phase — [YYYY-MM-DD]
+
+### Decision: [Short title, e.g. "Scope: Foundation vs Throwaway"]
+- **Chosen:** [What was decided]
+- **Alternatives considered:** [What else was on the table]
+- **Rationale:** [Why this was chosen]
+- **Trade-offs accepted:** [What was given up or deferred]
+
+### Decision: [Short title, e.g. "Tech: GDScript vs C# Autoload"]
+- **Chosen:** [What was decided]
+- **Alternatives considered:** [...]
+- **Rationale:** [...]
+- **Trade-offs accepted:** [...]
+```
+
+Write one entry per meaningful decision. Skip trivial choices (naming, file layout). If no real alternatives were considered for a choice, it's probably not worth logging.
+
+This file is a **draft** — `writing-plans` will append planning-phase decisions and finalize it.

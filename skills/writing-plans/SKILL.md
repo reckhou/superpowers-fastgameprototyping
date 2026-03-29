@@ -149,10 +149,43 @@ Fix issues inline. No need to re-review after fixing — just move on to the exe
 
 If a feature spans truly independent systems (e.g., "asset pipeline" and "property inspector" don't share code), write separate plans. One plan per coherent system is easier to execute and resume than one mega-plan.
 
+## Decision Log (Planning Phase)
+
+After writing the plan, **append planning-phase decisions** to the decision log started during brainstorming:
+
+```
+docs/decisions/YYYY-MM-DD-<feature-name>-decisions.md
+```
+
+If brainstorming was skipped (user came straight to writing-plans), create the file now using the format below.
+
+**Capture decisions made during planning** — architecture choices, data flow, patterns selected, and significant alternatives rejected:
+
+```markdown
+## Planning Phase — [YYYY-MM-DD]
+
+### Decision: [Short title, e.g. "Architecture: Event bus vs direct calls"]
+- **Chosen:** [What was decided]
+- **Alternatives considered:** [What else was on the table]
+- **Rationale:** [Why this was chosen]
+- **Trade-offs accepted:** [What was given up or deferred]
+```
+
+Write one entry per meaningful architectural or structural decision. Good candidates:
+- Data ownership and flow between systems
+- Separation of core logic from Godot/WPF layers
+- Patterns chosen (e.g., command pattern for undo, repository for data access)
+- Testability approach (e.g., interface injection vs direct coupling)
+- Anything you'd want to explain to a future self asking "why didn't you just...?"
+
+Skip decisions that are obvious from the code or follow directly from the tech stack.
+
+---
+
 ## Execution Handoff
 
-After saving the plan, **stop and wait for explicit user confirmation** before proceeding. Ask:
+After saving the plan and decision log, **stop and wait for explicit user confirmation** before proceeding. Ask:
 
-> "Plan saved to `<path>`. Ready to start implementation, or would you like to review/adjust anything first?"
+> "Plan saved to `<path>`. Decision log at `docs/decisions/<filename>`. Ready to start implementation, or would you like to review/adjust anything first?"
 
 Only invoke `executing-plans` once the user confirms. If the plan has truly independent parallel tasks, mention that — but default to sequential inline execution for prototypes.
