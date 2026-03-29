@@ -126,6 +126,7 @@ If no config is found, the skill proceeds natively without prompting.
 - The choice is remembered for the rest of the session — you won't be asked again on plan resume.
 - The main session's API settings are never affected; only the subprocess uses the custom endpoint.
 - No proxy or gateway (e.g. LiteLLM) is required — the subprocess calls your endpoint directly.
+- Use `/switch-api` at any time to override the current session's API mode.
 
 ---
 
@@ -146,6 +147,7 @@ If no config is found, the skill proceeds natively without prompting.
 | `brainstorming` | Always asks throwaway/foundation → propose approach with reasoning → invoke writing-plans |
 | `writing-plans` | Task breakdown (15-30 min tasks) → progress checkboxes → saved to `docs/plans/` |
 | `executing-plans` | Primary execution path — inline, task by task, verify, commit, check off in plan. Supports custom API subprocess mode (see [Custom API Configuration](#custom-api-configuration)). |
+| `session-config` | Default catch-all skill — fires when no other skill applies. Asks once per session whether to use custom API or native Claude (if config is present). |
 | `finishing-a-development-branch` | Merge / push PR / keep / discard + cleanup |
 | `iterating-on-feedback` | Triage playtest feedback → fix/tweak/explore/ignore → rapid iteration loop |
 | `prototype-to-production` | Promote a surviving throwaway to foundation code deliberately |
