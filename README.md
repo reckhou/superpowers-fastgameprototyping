@@ -98,7 +98,9 @@ Or explicitly check: ask Claude *"what skills do you have available?"* — it sh
 
 ### Setup
 
-Create `.claude/config.json` in your project root (project-scoped) or `~/.claude/config.json` (global):
+Create `.claude/config.json` in your project root (project-scoped), or the global config:
+- **Windows**: `%USERPROFILE%\.claude\config.json`
+- **macOS/Linux**: `~/.claude/config.json`
 
 ```json
 {
