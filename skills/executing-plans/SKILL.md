@@ -18,8 +18,8 @@ If no plan file exists for this feature, invoke `writing-plans` first. Don't imp
 ## Custom API Configuration (Optional)
 
 At startup, check for a custom API config by reading these files in order (first match wins):
-1. `.claude/config.json` in the project root (project-scoped)
-2. `~/.claude/config.json` (global)
+1. `.claude/config.json` in the project root (project-scoped — highest priority)
+2. `~/.claude/config.json` (global — fallback)
 
 Look for a `planExecution` key:
 

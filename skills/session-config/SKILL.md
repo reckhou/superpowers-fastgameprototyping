@@ -24,8 +24,8 @@ Scan conversation history. If the user has already stated an API mode preference
 ### Step 2: Check for Custom API Config
 
 Read these files in order (first match wins):
-1. `.claude/config.json` in the project root
-2. `~/.claude/config.json`
+1. `.claude/config.json` in the project root (project-scoped — highest priority)
+2. `~/.claude/config.json` (global — fallback)
 
 Look for a `planExecution` key:
 
