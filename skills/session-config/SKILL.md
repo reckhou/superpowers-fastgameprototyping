@@ -26,7 +26,7 @@ Scan conversation history. If the user has already stated an API mode preference
 Read these files in order (first `planExecution` key found wins):
 1. `.claude/settings.json` in the project root (project-scoped — highest priority)
 2. Platform-appropriate global settings:
-   - **Windows**: `%USERPROFILE%\.claude\settings.json`
+   - **Windows**: use Bash to run `echo "$USERPROFILE"` to get the home directory, then Read `<result>/.claude/settings.json`
    - **macOS/Linux**: `~/.claude/settings.json`
 
 If the project settings file exists but has no `planExecution` key, continue to the global settings.
