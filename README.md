@@ -37,7 +37,7 @@ The original Superpowers is a disciplined, production-grade workflow plugin. Thi
 |---|---|
 | **`brainstorming`** | Always asks throwaway-vs-foundation (never self-determines). Multi-approach proposals with reasoning for tech decisions. Opt-out confirmation before planning. |
 | **`writing-plans`** | Gates on brainstorming first. Kebab-case file naming enforced. Architecture field requires headless testability statement. Plan format includes Progress checkboxes for cross-session resume. Scope expansion must be surfaced. |
-| **`executing-plans`** | Invokes `writing-plans` if no plan file exists. Plan-referenced commit format (`[plan: feature-name, task-N]`). Conventional commits when no plan. Resume trusts prior completion via plan file checkboxes. |
+| **`executing-plans`** | Invokes `writing-plans` if no plan file exists. Plan-referenced commit format (`[plan: feature-name, task-N]`). Conventional commits when no plan. Resume trusts prior completion via plan file checkboxes. **Custom API mode**: if `planExecution` config is found in `.claude/config.json`, asks once per session whether to run tasks via a custom API endpoint (subprocess) or native inline execution. |
 | **`systematic-debugging`** | Replaced macOS codesign CI example with Godot/C# signal-tracing example. Phase 4 Step 1 adds visual/physics exception — document reproduction steps instead of failing test. |
 | **`using-superpowers`** | Announces active skill before following it. Bug fast-path — if user reports a bug, invoke `systematic-debugging` directly, skip brainstorming. Workflow sequence flowchart added. |
 | **`godot-workflow`** | Game exports target Windows/Mac/Linux. WPF toolset is Windows-only dev toolset, not part of game build. |
@@ -92,6 +92,43 @@ Start a new session and ask Claude to build something. It should announce `Using
 
 Or explicitly check: ask Claude *"what skills do you have available?"* — it should list the superpowers skills.
 
+## Custom API Configuration
+
+`executing-plans` supports routing task implementation through a custom API endpoint — useful for reducing costs by using a cheaper third-party model for plan execution while keeping your main session on the default Claude model.
+
+### Setup
+
+Create `.claude/config.json` in your project root (project-scoped) or `~/.claude/config.json` (global):
+
+```json
+{
+  "planExecution": {
+    "baseUrl": "https://your-custom-endpoint.com",
+    "apiKey": "your-api-token",
+    "model": "your-model-name"
+  }
+}
+```
+
+### How It Works
+
+When `executing-plans` starts and detects this config, it asks **once per session**:
+
+> "Custom API config found (`your-model-name` via `https://...`). Run tasks via custom API or native Claude?"
+
+- **Custom API** — each task is dispatched as a `claude -p` subprocess with the configured `ANTHROPIC_BASE_URL` and `ANTHROPIC_API_KEY`. The subprocess implements and verifies; the main session commits and updates the plan.
+- **Native** — inline execution as normal, no subprocess overhead.
+
+If no config is found, the skill proceeds natively without prompting.
+
+### Notes
+
+- The choice is remembered for the rest of the session — you won't be asked again on plan resume.
+- The main session's API settings are never affected; only the subprocess uses the custom endpoint.
+- No proxy or gateway (e.g. LiteLLM) is required — the subprocess calls your endpoint directly.
+
+---
+
 ## Skills Reference
 
 ### Domain Skills (New in This Fork)
@@ -108,7 +145,7 @@ Or explicitly check: ask Claude *"what skills do you have available?"* — it sh
 |---|---|
 | `brainstorming` | Always asks throwaway/foundation → propose approach with reasoning → invoke writing-plans |
 | `writing-plans` | Task breakdown (15-30 min tasks) → progress checkboxes → saved to `docs/plans/` |
-| `executing-plans` | Primary execution path — inline, task by task, verify, commit, check off in plan |
+| `executing-plans` | Primary execution path — inline, task by task, verify, commit, check off in plan. Supports custom API subprocess mode (see [Custom API Configuration](#custom-api-configuration)). |
 | `finishing-a-development-branch` | Merge / push PR / keep / discard + cleanup |
 | `iterating-on-feedback` | Triage playtest feedback → fix/tweak/explore/ignore → rapid iteration loop |
 | `prototype-to-production` | Promote a surviving throwaway to foundation code deliberately |
