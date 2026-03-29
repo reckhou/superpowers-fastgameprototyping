@@ -19,6 +19,8 @@ If no plan file exists for this feature, invoke `writing-plans` first. Don't imp
 
 ## Custom API Configuration (Optional)
 
+> **Note:** All tasks always run **inline** in the current session — never as spawned subprocesses. Subprocesses do not inherit the session's permission grants and will block on tool calls.
+
 At startup, check for a custom API config in this order (first `planExecution` key found wins):
 1. `.claude/settings.json` in the project root (project-scoped — highest priority)
 2. Platform-appropriate global settings:
@@ -43,15 +45,13 @@ Look for a `planExecution` key:
 - If the user has already chosen a mode earlier in this session, use that choice silently.
 - If this is the first invocation this session and config is present, ask:
 
-> "Custom API config found (`<model>` via `<baseUrl>`). Run tasks via custom API or native Claude?
-> - **Custom API** — subprocess per task, uses configured endpoint
-> - **Native** — inline execution, current session model"
+> "Custom API config found (`<model>` via `<baseUrl>`). Noted — all tasks will still run inline in this session. Proceed with native inline execution?"
 
 If no config is found, state it and proceed without asking:
 
 > "No custom API config found — proceeding with native inline execution."
 
-Set **custom API mode** based on the user's answer (or absent config), then proceed to Step 1.
+Proceed to Step 1.
 
 ## The Process
 
@@ -64,11 +64,9 @@ Set **custom API mode** based on the user's answer (or absent config), then proc
 
 ### Step 2: Execute Each Task
 
-For each task, choose the path based on whether custom API mode is active:
+All tasks run **inline** in the current session. Do not spawn subprocesses — they lose session permissions and will block.
 
----
-
-#### Path A — Inline (default, no config)
+For each task:
 
 1. Mark todo as `in_progress`
 2. Implement per the plan
@@ -77,38 +75,6 @@ For each task, choose the path based on whether custom API mode is active:
 5. **Update the plan file** — check off the task in the Progress section: change `- [ ] Task N` to `- [x] Task N`
 6. Mark todo as `completed`
 7. Move to next task
-
----
-
-#### Path B — Custom API subprocess (config present)
-
-1. Mark todo as `in_progress`
-2. Construct a task prompt (see format below) and dispatch via Bash:
-
-```bash
-ANTHROPIC_BASE_URL=<baseUrl> ANTHROPIC_API_KEY=<apiKey> \
-  claude --model <model> -p "<task prompt>"
-```
-
-3. Wait for subprocess to complete. Expect one of:
-   - `DONE` — implementation complete, proceed
-   - `DONE_WITH_CONCERNS: <details>` — review concerns, decide if action needed
-   - `BLOCKED: <reason>` — stop and assess; provide more context or escalate
-4. Commit the changes with the standard message format (see below)
-5. **Update the plan file** — check off the task: change `- [ ] Task N` to `- [x] Task N`
-6. Mark todo as `completed`
-7. Move to next task
-
-**Task prompt format for subprocess:**
-```
-Working directory: <absolute path>
-Task <N>: <full task description from plan>
-Architecture context: <2-3 sentence summary of the feature/codebase>
-
-Implement this task exactly as described. Run the verification step when done.
-Do NOT commit — just implement and verify.
-Reply with one of: DONE / DONE_WITH_CONCERNS:<details> / BLOCKED:<reason>
-```
 
 ### Step 3: Finish Up
 
