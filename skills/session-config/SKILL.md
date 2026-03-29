@@ -54,6 +54,8 @@ Look for a `planExecution` key:
 > 1. **Custom API** — `executing-plans` subprocesses use the configured endpoint
 > 2. **Native** — inline execution with the current session model (default)
 >
+> Note: this only affects task subprocesses — it does NOT change the current conversation model.
+>
 > Reply with 1 or 2."
 
 **If no config found** — proceed silently with native mode. Do not prompt.

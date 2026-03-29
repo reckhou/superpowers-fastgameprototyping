@@ -27,6 +27,8 @@ Use the Read tool to check these exact paths in order. Stop at the first file th
 > 1. **Custom API** — `executing-plans` subprocesses use the configured endpoint
 > 2. **Native** — inline execution with the current session model (default)
 >
+> Note: this only affects task subprocesses — it does NOT change the current conversation model.
+>
 > Reply with 1 or 2."
 
 **If none of the files exist or none contain a `planExecution` key**, say:
