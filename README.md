@@ -37,7 +37,7 @@ The original Superpowers is a disciplined, production-grade workflow plugin. Thi
 |---|---|
 | **`brainstorming`** | Always asks throwaway-vs-foundation (never self-determines). Multi-approach proposals with reasoning for tech decisions. Opt-out confirmation before planning. |
 | **`writing-plans`** | Gates on brainstorming first. Kebab-case file naming enforced. Architecture field requires headless testability statement. Plan format includes Progress checkboxes for cross-session resume. Scope expansion must be surfaced. |
-| **`executing-plans`** | Invokes `writing-plans` if no plan file exists. Plan-referenced commit format (`[plan: feature-name, task-N]`). Conventional commits when no plan. Resume trusts prior completion via plan file checkboxes. **Custom API mode**: if `planExecution` config is found in `.claude/config.json`, asks once per session whether to run tasks via a custom API endpoint (subprocess) or native inline execution. |
+| **`executing-plans`** | Invokes `writing-plans` if no plan file exists. Plan-referenced commit format (`[plan: feature-name, task-N]`). Conventional commits when no plan. Resume trusts prior completion via plan file checkboxes. **Custom API mode**: if `planExecution` config is found in `.claude/settings.json`, asks once per session whether to run tasks via a custom API endpoint (subprocess) or native inline execution. |
 | **`systematic-debugging`** | Replaced macOS codesign CI example with Godot/C# signal-tracing example. Phase 4 Step 1 adds visual/physics exception — document reproduction steps instead of failing test. |
 | **`using-superpowers`** | Announces active skill before following it. Bug fast-path — if user reports a bug, invoke `systematic-debugging` directly, skip brainstorming. Workflow sequence flowchart added. |
 | **`godot-workflow`** | Game exports target Windows/Mac/Linux. WPF toolset is Windows-only dev toolset, not part of game build. |
@@ -149,7 +149,7 @@ If no config is found, the skill proceeds natively without prompting.
 | `brainstorming` | Always asks throwaway/foundation → propose approach with reasoning → invoke writing-plans |
 | `writing-plans` | Task breakdown (15-30 min tasks) → progress checkboxes → saved to `docs/plans/` |
 | `executing-plans` | Primary execution path — inline, task by task, verify, commit, check off in plan. Supports custom API subprocess mode (see [Custom API Configuration](#custom-api-configuration)). |
-| `session-config` | Default catch-all skill — fires when no other skill applies. Asks once per session whether to use custom API or native Claude (if config is present). |
+| `session-config` | Default catch-all skill — fires when no other skill applies. Asks once per session whether to use custom API or native for `executing-plans` task subprocesses (if `planExecution` config is present). Does not affect the main session model. |
 | `finishing-a-development-branch` | Merge / push PR / keep / discard + cleanup |
 | `iterating-on-feedback` | Triage playtest feedback → fix/tweak/explore/ignore → rapid iteration loop |
 | `prototype-to-production` | Promote a surviving throwaway to foundation code deliberately |

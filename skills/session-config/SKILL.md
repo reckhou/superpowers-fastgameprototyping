@@ -23,6 +23,8 @@ Scan conversation history. If the user has already stated an API mode preference
 
 ### Step 2: Check for Custom API Config
 
+> **Scope**: This setting only affects task subprocesses dispatched by `executing-plans` (Path B). It does NOT change the main session model or affect any other skill.
+
 **IMPORTANT: The config file is `settings.json`, NOT `config.json`.** Do NOT search for or read `config.json` — that file does not exist in Claude Code.
 
 Use the Read tool to check these exact paths in order (first `planExecution` key found wins):
@@ -45,11 +47,14 @@ Look for a `planExecution` key:
 }
 ```
 
-**If config found** — ask the user:
+**If config found** — present an interactive choice:
 
-> "Custom API config found (`<model>` via `<baseUrl>`). Which API should I use this session?
-> - **Custom API** — task execution uses the configured endpoint
-> - **Native** — use current session model (default)"
+> "Custom API config found (`<model>` via `<baseUrl>`). Which API should I use for task execution this session?
+>
+> 1. **Custom API** — `executing-plans` subprocesses use the configured endpoint
+> 2. **Native** — inline execution with the current session model (default)
+>
+> Reply with 1 or 2."
 
 **If no config found** — proceed silently with native mode. Do not prompt.
 

@@ -4,6 +4,8 @@ description: "Manually switch the API mode for this session (custom endpoint or 
 
 Override any prior API mode choice with the new answer.
 
+> **Scope**: This setting only affects task subprocesses dispatched by `executing-plans` (Path B). It does NOT change the main session model or affect any other skill.
+
 ## IMPORTANT: The config file is `settings.json`, NOT `config.json`
 
 Claude Code stores configuration in `settings.json` (not `config.json`). You MUST use the exact filenames below. Do NOT search for or read `config.json` — that file does not exist.
@@ -18,15 +20,18 @@ Use the Read tool to check these exact paths in order. Stop at the first file th
 
 ## Step 2: Ask the user
 
-**If a `planExecution` key was found**, ask:
+**If a `planExecution` key was found**, present an interactive choice:
 
-> "Which API should I use for the rest of this session?
-> - **Custom API** — task execution uses the configured endpoint (`<model>` via `<baseUrl>`)
-> - **Native** — use current session model (default)"
+> "Custom API config found (`<model>` via `<baseUrl>`). Which API should I use for task execution this session?
+>
+> 1. **Custom API** — `executing-plans` subprocesses use the configured endpoint
+> 2. **Native** — inline execution with the current session model (default)
+>
+> Reply with 1 or 2."
 
-**If none of the files above exist or none contain a `planExecution` key**, say:
+**If none of the files exist or none contain a `planExecution` key**, say:
 
-> "No custom API config found. Add a `planExecution` key to `.claude/settings.json` to enable a custom endpoint."
+> "No custom API config found. Add a `planExecution` key to `.claude/settings.json` to enable a custom endpoint for `executing-plans` task subprocesses."
 
 ## Step 3: Confirm and continue
 
