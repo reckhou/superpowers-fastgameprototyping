@@ -24,12 +24,12 @@ Scan conversation history. If the user has already stated an API mode preference
 ### Step 2: Check for Custom API Config
 
 Read these files in order (first `planExecution` key found wins):
-1. `.claude/config.json` in the project root (project-scoped — highest priority)
-2. Platform-appropriate global config:
-   - **Windows**: `%USERPROFILE%\.claude\config.json`
-   - **macOS/Linux**: `~/.claude/config.json`
+1. `.claude/settings.json` in the project root (project-scoped — highest priority)
+2. Platform-appropriate global settings:
+   - **Windows**: `%USERPROFILE%\.claude\settings.json`
+   - **macOS/Linux**: `~/.claude/settings.json`
 
-If the project config file exists but has no `planExecution` key, continue to the global config.
+If the project settings file exists but has no `planExecution` key, continue to the global settings.
 
 Look for a `planExecution` key:
 
