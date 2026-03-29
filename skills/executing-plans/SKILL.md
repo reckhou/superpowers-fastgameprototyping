@@ -13,6 +13,8 @@ Load the plan, execute tasks in order, verify each one, move on.
 
 ## Before You Start
 
+**Context tip:** If this is a large plan (4+ tasks) or you've been brainstorming and planning in this same session, consider running `/clear` first to free up context window space for implementation. Not required — just a suggestion.
+
 If no plan file exists for this feature, invoke `writing-plans` first. Don't implement without a plan.
 
 ## Custom API Configuration (Optional)

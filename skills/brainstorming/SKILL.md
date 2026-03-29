@@ -89,4 +89,8 @@ Approach: [how — with reasoning]
 Starting the plan — say stop if you want changes.
 ```
 
-After confirmation (or no objection), immediately invoke `writing-plans`.
+After presenting the brief, **stop and wait for explicit user confirmation** before proceeding. Ask:
+
+> "Happy with this direction? Any changes before I write the plan?"
+
+Only invoke `writing-plans` once the user confirms (or explicitly says to proceed).

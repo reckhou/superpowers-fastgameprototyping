@@ -151,6 +151,8 @@ If a feature spans truly independent systems (e.g., "asset pipeline" and "proper
 
 ## Execution Handoff
 
-After saving the plan, immediately invoke `executing-plans` to implement it inline.
+After saving the plan, **stop and wait for explicit user confirmation** before proceeding. Ask:
 
-If the plan has truly independent parallel tasks, mention that — but default to sequential inline execution for prototypes.
+> "Plan saved to `<path>`. Ready to start implementation, or would you like to review/adjust anything first?"
+
+Only invoke `executing-plans` once the user confirms. If the plan has truly independent parallel tasks, mention that — but default to sequential inline execution for prototypes.
