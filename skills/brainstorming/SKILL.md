@@ -41,35 +41,45 @@ If a throwaway prototype survives into a second session, stop. Plan it properly 
 2. **Propose your approach** — see below for how to handle tech decisions
 3. **Get confirmation** — user confirms or adjusts direction, then invoke `writing-plans`
 
+### Clarifying Questions
+
+Ask as many questions as needed to fully understand the problem space. There are no stupid questions at this stage — over-asking is preferable to under-asking.
+
+Cover any relevant dimensions: scope, data formats, user interactions, edge cases, performance expectations, integration points, existing constraints, future extensibility, and team conventions. Surface ambiguities even if they seem obvious.
+
+Ask all questions upfront in a single block (not in sequence) so the user can answer them all at once.
+
 ### Proposing an Approach
 
 Always explain your reasoning. Don't just state the decision — state why it's the right call for this prototype.
 
-**For straightforward cases (one obvious approach):**
-- State the approach with a 1-2 sentence explanation of why it fits
-- Note any trade-off or risk worth flagging
-
-**For genuine tech decisions (multiple viable options):**
-- Present 2-3 options with one-line pros/cons each
+**For every decision (straightforward or complex):**
+- List all viable options, not just the top 2-3
+- For each option, provide explicit pros AND cons
 - State your recommendation and explain why
-- Invite the user to weigh in before proceeding
+- Invite the user to weigh in, mix options, or suggest alternatives
+
+There are no stupid solutions at this stage. A seemingly impractical option may spark the right idea.
 
 Example:
 ```
-Option A: GDScript scene script — fast, no compile step, enough for this scope
-Option B: C# + autoload — better if this system will be shared with the WPF tool
+Option A: GDScript scene script
+  Pros: fast, no compile step, easy to iterate
+  Cons: no static typing, harder to share with WPF tool
 
-Recommendation: Option A, since this is self-contained to the scene.
-Your call if you expect this to grow.
+Option B: C# + autoload
+  Pros: static typing, shared with WPF tool, IDE support
+  Cons: compile step, more boilerplate, overkill if self-contained
+
+Option C: C# attached script (no autoload)
+  Pros: static typing without global singleton overhead
+  Cons: harder to access from other scenes
+
+Recommendation: Option A if throwaway, Option B if this will be shared with the WPF tool.
 ```
-
-**For scope or architecture unknowns:**
-- Ask ONE focused question before proposing
-- Don't ask multiple questions in sequence
 
 ## What to Skip
 
-- Multiple clarifying questions in sequence (ask ONE if genuinely needed)
 - Written spec documents
 - Spec review loops
 - Waiting for approval of a design document
