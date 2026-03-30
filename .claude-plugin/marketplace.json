@@ -9,7 +9,7 @@
     {
       "name": "superpowers-fastgameprototyping",
       "description": "Core skills library for Claude Code: TDD, debugging, collaboration patterns, and proven techniques",
-      "version": "5.2.1",
+      "version": "5.2.2",
       "source": "./",
       "author": {
         "name": "reckhou",

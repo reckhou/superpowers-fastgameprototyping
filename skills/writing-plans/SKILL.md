@@ -182,10 +182,29 @@ Skip decisions that are obvious from the code or follow directly from the tech s
 
 ---
 
+## CLAUDE.md Conflict Review
+
+After writing the plan and decision log, **review the project's `CLAUDE.md`** (if it exists) for any entries that conflict with the decisions just made.
+
+Look for conflicts such as:
+- Architectural patterns the plan contradicts (e.g., plan uses repository pattern but CLAUDE.md mandates direct data access)
+- File naming or location conventions the plan violates
+- Tech stack or library decisions that have changed
+- Data flow or ownership rules that this plan overrides
+
+**How to handle conflicts:**
+- If a CLAUDE.md entry is now outdated or incorrect given the plan, **update CLAUDE.md** to reflect the new decision
+- If the conflict is intentional (this plan is a deliberate deviation), add a note in CLAUDE.md explaining the exception and why
+- If the plan is the thing that should change (CLAUDE.md captures a hard constraint), surface it to the user before proceeding
+
+After reviewing, briefly state what was checked and any updates made (or "no conflicts found").
+
+---
+
 ## Execution Handoff
 
-After saving the plan and decision log, **stop and wait for explicit user confirmation** before proceeding. Ask:
+After saving the plan, decision log, and completing the CLAUDE.md review, **stop and wait for explicit user confirmation** before proceeding. Ask:
 
-> "Plan saved to `<path>`. Decision log at `docs/decisions/<filename>`. Ready to start implementation, or would you like to review/adjust anything first?"
+> "Plan saved to `<path>`. Decision log at `docs/decisions/<filename>`. CLAUDE.md reviewed [and updated / — no conflicts]. Ready to start implementation, or would you like to review/adjust anything first?"
 
 Only invoke `executing-plans` once the user confirms. If the plan has truly independent parallel tasks, mention that — but default to sequential inline execution for prototypes.
