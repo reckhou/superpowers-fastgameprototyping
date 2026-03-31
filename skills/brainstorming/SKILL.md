@@ -37,9 +37,62 @@ If a throwaway prototype survives into a second session, stop. Plan it properly 
 
 ## Step 2: Spike Brief (Foundation Code)
 
-1. **Glance at project context** — existing files, structure, recent work (2 minutes max)
-2. **Propose your approach** — see below for how to handle tech decisions
-3. **Get confirmation** — user confirms or adjusts direction, then invoke `writing-plans`
+1. **Research thoroughly** — see "Research Before Recommending" below
+2. **Glance at project context** — existing files, structure, recent work (2 minutes max)
+3. **Propose your approach** — see below for how to handle tech decisions
+4. **Get confirmation** — user confirms or adjusts direction, then invoke `writing-plans`
+
+### Research Before Recommending
+
+**Do not rely on training data alone.** Training data may be outdated — libraries change APIs, best practices evolve, new tools emerge. Wrong conclusions at the brainstorming stage waste far more work than the time spent researching.
+
+This research pattern follows the **orchestrator-worker model** ([reference](https://www.anthropic.com/engineering/multi-agent-research-system)): the lead session (Opus) plans research strategy and synthesizes results, while parallel subagents (Sonnet) do the actual searching.
+
+#### Model & Session Requirements
+
+- **The lead session (you) must be Opus.** If the current session is not running on Opus, suggest the user switch with `/model` before proceeding — brainstorming is where wrong conclusions are most expensive and Opus as orchestrator is the highest-leverage use of the capable model.
+- **Research subagents use Sonnet** (`model: "sonnet"`). Sonnet subagents with dedicated context windows outperform a single Opus agent doing all research serially. A model upgrade (Sonnet over Haiku) is a larger performance gain than doubling the token budget on a weaker model.
+
+#### Parallel Research Dispatch
+
+Dispatch **2-5 research subagents in parallel** via the Agent tool, each with a specific research objective and clear boundaries to prevent duplication. Scale by complexity:
+
+| Complexity | Subagents | Tool calls each | Example |
+|---|---|---|---|
+| Simple fact-finding | 1 | 3-10 | "What's the latest Godot 4 version?" |
+| Comparison / evaluation | 2-3 | 10-15 each | "Compare ECS libraries for C#" |
+| Complex multi-domain research | 4-5 | 15+ each | "Architecture options for multiplayer with rollback" |
+
+Each subagent prompt must include:
+- A **specific research objective** (not "research everything about X")
+- **Output format**: compressed findings with source URLs — not raw search results
+- **Boundary**: what this agent covers vs. what sibling agents cover
+
+#### Query Strategy
+
+Instruct subagents to **start with short, broad queries, then progressively narrow** based on what's available. Overly specific initial queries return few or no results.
+
+#### Source Quality
+
+Prefer **authoritative sources** over SEO-optimized content:
+- Official documentation, GitHub repos, RFCs, academic papers
+- Established blogs by known practitioners (not content farms)
+- Release notes and changelogs for version-specific claims
+- If a highly-ranked result looks like SEO filler, skip it and dig deeper
+
+#### Synthesis
+
+After subagents return, the lead session (you) must:
+- **Cross-reference findings** — do subagents agree? Flag contradictions
+- **Verify critical claims** — if a subagent says "library X supports Y", spot-check against official docs
+- **Assess completeness** — are there gaps? Dispatch additional subagents if needed
+- **Present with references** — every claim in the final proposal should trace to a source URL
+
+#### Guardrails
+
+- **Be honest about uncertainty** — if research cannot find a definitive answer, say so. Never fabricate references or present guesses as facts
+- **Use extended thinking** for planning the research strategy and synthesizing results — deep analysis here prevents rework later
+- **Don't over-research simple questions** — if the answer is a quick doc lookup, do it inline. The parallel research pattern is for decisions with real trade-offs
 
 ### Clarifying Questions
 

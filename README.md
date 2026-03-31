@@ -35,7 +35,7 @@ The original Superpowers is a disciplined, production-grade workflow plugin. Thi
 
 | Skill | Change |
 |---|---|
-| **`brainstorming`** | Always asks throwaway-vs-foundation (never self-determines). Multi-approach proposals with reasoning for tech decisions. Opt-out confirmation before planning. |
+| **`brainstorming`** | Always asks throwaway-vs-foundation (never self-determines). Multi-approach proposals with reasoning for tech decisions. Orchestrator-worker research: Opus leads, parallel Sonnet subagents search and verify before any recommendation ([design reference](https://www.anthropic.com/engineering/multi-agent-research-system)). Opt-out confirmation before planning. |
 | **`writing-plans`** | Gates on brainstorming first. Kebab-case file naming enforced. Architecture field requires headless testability statement. Plan format includes Progress checkboxes for cross-session resume. Scope expansion must be surfaced. |
 | **`executing-plans`** | Invokes `writing-plans` if no plan file exists. Plan-referenced commit format (`[plan: feature-name, task-N]`). Conventional commits when no plan. Resume trusts prior completion via plan file checkboxes. **Custom API mode**: if `planExecution` config is found in `.claude/settings.json`, asks once per session whether to run tasks via a custom API endpoint (subprocess) or native inline execution. |
 | **`systematic-debugging`** | Replaced macOS codesign CI example with Godot/C# signal-tracing example. Phase 4 Step 1 adds visual/physics exception — document reproduction steps instead of failing test. |
