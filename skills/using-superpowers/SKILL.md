@@ -60,6 +60,8 @@ Interrupts that can happen at any point:
 - Working on game logic or a viewmodel → `test-driven-development`
 - Working in Godot → `godot-workflow`
 - Working on a WPF toolset → `wpf-toolset-patterns`
+- Saving design/research context to resume later → `save-session`
+- Listing, resuming, archiving, or restoring saved sessions → `sessions`
 
 ## Skill Priority for This Fork
 

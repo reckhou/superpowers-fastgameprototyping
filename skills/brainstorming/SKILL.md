@@ -193,3 +193,19 @@ Use the same date and feature name slug as the plan file will use.
 Write one entry per meaningful decision. Skip trivial choices (naming, file layout). If no real alternatives were considered for a choice, it's probably not worth logging.
 
 This file is a **draft** — `writing-plans` will append planning-phase decisions and finalize it.
+
+---
+
+## Session Save Prompt
+
+After the user confirms direction and the decision log is written, ask:
+
+> "Would you like to save this brainstorming session so you can resume it later? (Say yes to run `/save-session`, or skip if this is a quick throwaway.)"
+
+This prompt should appear:
+- After every brainstorming session that reaches the "user confirms direction" stage
+- Before invoking `writing-plans`
+
+If the user says yes, invoke the `save-session` skill. If no, proceed directly to `writing-plans` (or end, depending on user intent).
+
+If the project hasn't opted into sessions yet, the `save-session` skill will handle the opt-in prompt — don't duplicate that check here.

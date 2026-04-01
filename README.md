@@ -73,6 +73,8 @@ Interrupts that can happen at any point:
 - Writing game logic or a viewmodel → `test-driven-development` applies
 - Working in Godot → `godot-workflow` guides architecture and pattern choices
 - Working on a WPF toolset → `wpf-toolset-patterns` guides MVVM, canvas, undo/redo
+- **Save context to resume later** → `save-session` writes a briefing doc to project memory
+- **View or resume a saved session** → `sessions` lists, resumes, archives, or restores sessions
 
 ---
 
@@ -142,11 +144,18 @@ If no config is found, the skill proceeds natively without prompting.
 | `dotnet-csharp-workflow` | Working on .NET/C# — solution setup, build, test, NuGet, Godot .csproj |
 | `wpf-toolset-patterns` | Building a WPF game editor or toolset |
 
+### Session Persistence Skills (New in This Fork)
+
+| Skill | Triggers when |
+|---|---|
+| `save-session` | End of brainstorming, or any time you want to save context for a future conversation |
+| `sessions` | Listing, resuming, archiving, or restoring saved design/research sessions |
+
 ### Core Workflow Skills (Modified)
 
 | Skill | What it does |
 |---|---|
-| `brainstorming` | Always asks throwaway/foundation → propose approach with reasoning → invoke writing-plans |
+| `brainstorming` | Always asks throwaway/foundation → propose approach with reasoning → prompt to save session → invoke writing-plans |
 | `writing-plans` | Task breakdown (15-30 min tasks) → progress checkboxes → saved to `docs/plans/` |
 | `executing-plans` | Primary execution path — inline, task by task, verify, commit, check off in plan. Supports custom API subprocess mode (see [Custom API Configuration](#custom-api-configuration)). |
 | `session-config` | Default catch-all skill — fires when no other skill applies. Asks once per session whether to use custom API or native for `executing-plans` task subprocesses (if `planExecution` config is present). Does not affect the main session model. |
@@ -183,7 +192,9 @@ superpowers/
 │   ├── hooks.json                   # Claude Code SessionStart hook
 │   └── session-start                # Bootstrap script
 ├── skills/
-│   ├── brainstorming/               # Modified: always ask scope, reasoning, opt-out confirm
+│   ├── brainstorming/               # Modified: always ask scope, reasoning, session save prompt
+│   ├── save-session/                # New: save current session context to project memory
+│   ├── sessions/                    # New: list, resume, archive, restore saved sessions
 │   ├── dotnet-csharp-workflow/      # New: .NET/C# tooling
 │   ├── godot-workflow/              # New: Godot GDScript + C# (game: Win/Mac/Linux)
 │   ├── wpf-toolset-patterns/        # New: WPF game editors (Windows-only toolset)
@@ -200,7 +211,7 @@ superpowers/
 │   ├── receiving-code-review/
 │   ├── dispatching-parallel-agents/
 │   ├── finishing-a-development-branch/
-│   └── using-superpowers/           # Modified: announce skill, bug fast-path, workflow flowchart
+│   └── using-superpowers/           # Modified: announce skill, bug fast-path, save-session + sessions registered
 ├── agents/
 │   └── code-reviewer.md
 └── commands/                        # Deprecated upstream commands
