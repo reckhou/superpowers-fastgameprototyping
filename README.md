@@ -58,7 +58,7 @@ brainstorming  →  Asks: throwaway or foundation?
                   Throwaway: just build.
                   Foundation: propose approach (with reasoning), confirm, then plan.
         ↓
-writing-plans  →  Task breakdown saved to docs/plans/YYYY-MM-DD-feature-name.md
+writing-plans  →  Task breakdown saved to docs/superpowers/plans/YYYY-MM-DD-feature-name.md
                   (15-30 min tasks, progress checkboxes for resume)
         ↓
 executing-plans →  Implement each task inline, verify, commit, check off in plan
@@ -156,7 +156,7 @@ If no config is found, the skill proceeds natively without prompting.
 | Skill | What it does |
 |---|---|
 | `brainstorming` | Always asks throwaway/foundation → propose approach with reasoning → prompt to save session → invoke writing-plans |
-| `writing-plans` | Task breakdown (15-30 min tasks) → progress checkboxes → saved to `docs/plans/` |
+| `writing-plans` | Task breakdown (15-30 min tasks) → progress checkboxes → saved to `docs/superpowers/plans/` |
 | `executing-plans` | Primary execution path — inline, task by task, verify, commit, check off in plan. Supports custom API subprocess mode (see [Custom API Configuration](#custom-api-configuration)). |
 | `session-config` | Default catch-all skill — fires when no other skill applies. Asks once per session whether to use custom API or native for `executing-plans` task subprocesses (if `planExecution` config is present). Does not affect the main session model. |
 | `finishing-a-development-branch` | Merge / push PR / keep / discard + cleanup |
@@ -200,6 +200,7 @@ superpowers/
 │   ├── wpf-toolset-patterns/        # New: WPF game editors (Windows-only toolset)
 │   ├── iterating-on-feedback/       # New: post-playtest iteration loop
 │   ├── prototype-to-production/     # New: promote throwaway to foundation
+│   ├── code-reviewer/               # New: subagent invoked by requesting-code-review
 │   ├── executing-plans/             # Modified: plan-ref commits, resume via checkboxes
 │   ├── writing-plans/               # Modified: brainstorm gate, headless testability, progress section
 │   ├── test-driven-development/     # Modified: logic only, not visual/physics
@@ -212,9 +213,13 @@ superpowers/
 │   ├── dispatching-parallel-agents/
 │   ├── finishing-a-development-branch/
 │   └── using-superpowers/           # Modified: announce skill, bug fast-path, save-session + sessions registered
-├── agents/
-│   └── code-reviewer.md
-└── commands/                        # Deprecated upstream commands
+├── docs/
+│   └── superpowers/
+│       ├── plans/                   # Plan files (YYYY-MM-DD-feature-name.md)
+│       ├── decisions/               # Architecture decision records (ADRs)
+│       └── specs/                   # Feature specs
+└── commands/
+    └── switch-api.md                # /switch-api — override API mode for the current session
 ```
 
 ---
