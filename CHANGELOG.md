@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.4.1] - 2026-04-01
+
+### Changed
+
+- **code-reviewer converted to skill**: Moved `agents/code-reviewer.md` to `skills/code-reviewer/SKILL.md` so it only loads when triggered, instead of always consuming context tokens.
+- **Removed deprecated command stubs**: Deleted `commands/brainstorm.md`, `commands/execute-plan.md`, and `commands/write-plan.md` — these were redirect stubs pointing users to the replacement skills.
+- **Reorganized docs**: Moved plan documents from `docs/plans/` to `docs/superpowers/plans/`; added `docs/superpowers/decisions/` for ADRs.
+
 ## [5.0.5] - 2026-03-17
 
 ### Fixed

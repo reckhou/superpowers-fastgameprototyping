@@ -1,5 +1,13 @@
 # Superpowers Release Notes
 
+## v5.4.1 (2026-04-01)
+
+### Changed
+
+- **code-reviewer is now a skill** — moved from `agents/` to `skills/code-reviewer/` so it only loads on demand instead of always occupying context. Saves ~254 tokens per conversation that doesn't need code review.
+- **Removed deprecated command stubs** — `brainstorm`, `execute-plan`, and `write-plan` commands deleted. These were redirect stubs; the replacement skills (`brainstorming`, `executing-plans`, `writing-plans`) have been the canonical entry points for some time.
+- **Docs reorganization** — plan documents moved to `docs/superpowers/plans/`; new `docs/superpowers/decisions/` directory for architectural decision records.
+
 ## v5.0.5 (2026-03-17)
 
 ### Bug Fixes
