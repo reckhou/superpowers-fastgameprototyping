@@ -23,7 +23,7 @@ Scan conversation history. If the user has already stated an API mode preference
 
 ### Step 2: Check for Custom API Config
 
-> **Scope**: This setting only affects task subprocesses dispatched by `executing-plans` (Path B). It does NOT change the main session model or affect any other skill.
+> **Scope**: This setting affects task subprocess dispatch in `executing-plans` and `subagent-driven-development`. It does NOT change the main session model or affect other skills.
 
 **IMPORTANT: The config file is `settings.json`, NOT `config.json`.** Do NOT search for or read `config.json` — that file does not exist in Claude Code.
 

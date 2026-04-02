@@ -4,7 +4,7 @@ description: "Manually switch the API mode for this session (custom endpoint or 
 
 Override any prior API mode choice with the new answer.
 
-> **Scope**: This setting only affects task subprocesses dispatched by `executing-plans` (Path B). It does NOT change the main session model or affect any other skill.
+> **Scope**: This setting affects task subprocess dispatch in `executing-plans` and `subagent-driven-development`. It does NOT change the main session model or affect other skills.
 
 ## IMPORTANT: The config file is `settings.json`, NOT `config.json`
 

@@ -17,41 +17,52 @@ Load the plan, execute tasks in order, verify each one, move on.
 
 If no plan file exists for this feature, invoke `writing-plans` first. Don't implement without a plan.
 
-## Custom API Configuration (Optional)
+## Execution Mode
 
-> **Note:** All tasks always run **inline** in the current session — never as spawned subprocesses. Subprocesses do not inherit the session's permission grants and will block on tool calls.
+At startup, check for a `planExecution` config in this order (first key found wins):
+1. `.claude/settings.json` in the project root
+2. **Windows**: run `echo "$USERPROFILE"` in Bash, then Read `<result>/.claude/settings.json`
+3. **macOS/Linux**: `~/.claude/settings.json`
 
-At startup, check for a custom API config in this order (first `planExecution` key found wins):
-1. `.claude/settings.json` in the project root (project-scoped — highest priority)
-2. Platform-appropriate global settings:
-   - **Windows**: use Bash to run `echo "$USERPROFILE"` to get the home directory, then Read `<result>/.claude/settings.json`
-   - **macOS/Linux**: `~/.claude/settings.json`
+**Ask once per session** — check conversation history first; if mode was already chosen this session, use it silently.
 
-If the project settings file exists but has no `planExecution` key, continue to the global settings.
+### If `planExecution` config found:
 
-Look for a `planExecution` key:
+> "Custom API config found (`<model>` via `<baseUrl>`). How should tasks run?
+>
+> 1. **Custom API** — each task spawns a `claude` subprocess with `--dangerously-skip-permissions` using the configured endpoint
+> 2. **Native** — inline execution with the current session model
+>
+> Reply with 1 or 2."
 
-```json
-{
-  "planExecution": {
-    "baseUrl": "https://your-custom-endpoint.com",
-    "apiKey": "your-api-token",
-    "model": "your-model-name"
-  }
-}
+### If no config found:
+
+Proceed with native inline execution — no prompt needed.
+
+---
+
+### Custom API task execution (mode 1)
+
+For each task, construct a self-contained prompt and run:
+
+```bash
+ANTHROPIC_BASE_URL="<baseUrl>" ANTHROPIC_API_KEY="<apiKey>" \
+claude --model <model> --dangerously-skip-permissions -p "<task prompt>"
 ```
 
-**Ask once per session** — check conversation history first:
-- If the user has already chosen a mode earlier in this session, use that choice silently.
-- If this is the first invocation this session and config is present, ask:
+The task prompt must be self-contained — include:
+- Full task description (copy from plan verbatim)
+- Working directory path
+- Architecture context (2-3 sentences)
+- Exact files to create or modify
+- The verification step to run at the end
+- Commit message format: `[plan: <feature>, task-<N>] <description>`
 
-> "Custom API config found (`<model>` via `<baseUrl>`). Noted — all tasks will still run inline in this session. Proceed with native inline execution?"
+Run the Bash command from the project root. Wait for it to complete, then verify the output and check the commit was made before moving to the next task.
 
-If no config is found, state it and proceed without asking:
+### Native task execution (mode 2)
 
-> "No custom API config found — proceeding with native inline execution."
-
-Proceed to Step 1.
+All tasks run inline in the current session. Proceed to Step 1.
 
 ## The Process
 
