@@ -51,11 +51,11 @@ This research pattern follows the **orchestrator-worker model** ([reference](htt
 #### Model & Session Requirements
 
 - **The lead session (you) must be Opus.** If the current session is not running on Opus, suggest the user switch with `/model` before proceeding — brainstorming is where wrong conclusions are most expensive and Opus as orchestrator is the highest-leverage use of the capable model.
-- **Research subagents use Sonnet** (`model: "sonnet"`). Sonnet subagents with dedicated context windows outperform a single Opus agent doing all research serially. A model upgrade (Sonnet over Haiku) is a larger performance gain than doubling the token budget on a weaker model.
+- **Research subagents MUST use Sonnet** — always pass `model: "sonnet"` to the Agent tool. Sonnet subagents with dedicated context windows outperform a single Opus agent doing all research serially. A model upgrade (Sonnet over Haiku) is a larger performance gain than doubling the token budget on a weaker model.
 
 #### Parallel Research Dispatch
 
-Dispatch **2-5 research subagents in parallel** via the Agent tool, each with a specific research objective and clear boundaries to prevent duplication. Scale by complexity:
+Dispatch **2-5 research subagents in parallel** via the Agent tool, each with `model: "sonnet"` explicitly set, a specific research objective, and clear boundaries to prevent duplication. Scale by complexity:
 
 | Complexity | Subagents | Tool calls each | Example |
 |---|---|---|---|
