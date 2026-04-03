@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.4.4] - 2026-04-03
+
+### Changed
+
+- **brainstorming: ai-generated file tagging**: All `.md` files created during brainstorming (decision logs, research notes, synthesis documents) must include `ai-generated` in their YAML frontmatter `tags`. Applies to files written by Claude and by research subagents.
+- **brainstorming: ai-generated context rule (design tasks)**: When reading existing project files during the context glance, files tagged `ai-generated` are treated as unreviewed drafts, not approved decisions. Only their `Sources` section may be used for external references. Content is surfaced to the user as a hypothesis, not a locked-in decision. User confirming "yes" to proceed to `writing-plans` constitutes approval of the current direction.
+
 ## [5.4.1] - 2026-04-01
 
 ### Changed

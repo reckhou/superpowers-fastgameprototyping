@@ -42,6 +42,20 @@ If a throwaway prototype survives into a second session, stop. Plan it properly 
 3. **Propose your approach** — see below for how to handle tech decisions
 4. **Get confirmation** — user confirms or adjusts direction, then invoke `writing-plans`
 
+### Reading AI-Generated Context (Design Tasks Only)
+
+When reading existing project files during the context glance, check the YAML frontmatter `tags` field. Files tagged `ai-generated` have **not been approved by the user** — treat them as unreviewed drafts, not established decisions.
+
+**Rules for `ai-generated` files:**
+- **Do not** treat any content as a concrete design decision that is already locked in
+- **Do** use the `Sources` section to find and reference original external sources
+- **Do** surface relevant content to the user as a *starting point* or *hypothesis*, clearly flagging it as AI-generated and unreviewed
+- **Do not** skip the "Propose your approach" and "Get confirmation" steps on the assumption that an ai-generated file already captured the answer
+
+**Approval via plan confirmation:** If the brainstorm concludes and the user is asked "Happy with this direction? Any changes before I write the plan?" — a "yes" (or explicit instruction to proceed) constitutes approval of the current design direction, including any content from ai-generated files that was surfaced and discussed. No separate document approval step is needed.
+
+This rule applies to **design tasks only** (game design, system design, architecture decisions). It does not affect code-only tasks where ai-generated files are just reference material.
+
 ### Research Before Recommending
 
 **Do not rely on training data alone.** Training data may be outdated — libraries change APIs, best practices evolve, new tools emerge. Wrong conclusions at the brainstorming stage waste far more work than the time spent researching.
@@ -189,6 +203,14 @@ Use the same date and feature name slug as the plan file will use.
 - **Rationale:** [...]
 - **Trade-offs accepted:** [...]
 ```
+
+**File tagging convention:** All AI-generated `.md` files — including decision logs, research notes, synthesis documents, and any other markdown files created during brainstorming — must include `ai-generated` in their YAML frontmatter tags. Example:
+
+```yaml
+tags: [game-design, core-loop, ai-generated]
+```
+
+This applies to every `.md` file written by Claude during the brainstorming process, including files written by research subagents.
 
 Write one entry per meaningful decision. Skip trivial choices (naming, file layout). If no real alternatives were considered for a choice, it's probably not worth logging.
 
