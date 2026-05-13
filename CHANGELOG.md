@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.5.0] - 2026-05-14
+
+### Added
+
+- **Codex CLI installer (`scripts/codex-install.ps1`)**: Walks `skills/*/SKILL.md` and `commands/*.md`, creating symlinks under `~/.codex/prompts/` so Superpower's skills become invocable as `/use-<skill>` slash commands under OpenAI Codex CLI. Idempotent; conflict-safe — refuses to overwrite existing prompt symlinks owned by another project. Requires Windows Developer Mode.
+- **README: Codex CLI installation section**: Documents the installer plus the subset of skills (`subagent-driven-development`, `dispatching-parallel-agents`, plan-mode-dependent parts of `writing-plans` / `executing-plans`) that depend on Claude-specific primitives and degrade under Codex.
+
 ## [5.4.4] - 2026-04-03
 
 ### Changed
