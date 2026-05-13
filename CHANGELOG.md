@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.5.1] - 2026-05-14
+
+### Fixed
+
+- **Codex CLI installer target directory**: 5.5.0's `scripts/codex-install.ps1` symlinked files into `~/.codex/prompts/` on the assumption that Codex would surface them as bare `/<name>` slash commands. Codex CLI 0.130.0 does not read that directory at all — its slash command set is a hardcoded enum. User-authored extensions live in `$HOME/.agents/skills/` and appear under the `/skills` menu.
+  - Installer now creates folder symlinks `~/.agents/skills/<skill-name>` → `skills/<skill-name>/` (preserving full skill directory including `references/` and `scripts/`) and file symlinks `~/.agents/skills/<command-name>/SKILL.md` → `commands/<command-name>.md` for flat command files.
+  - README updated with the correct invocation syntax (`/skills` menu, `$skill-name` mention, or Codex auto-selection by description).
+  - Conflict detection preserved: cross-repo collisions are reported, not silently overwritten.
+
 ## [5.5.0] - 2026-05-14
 
 ### Added

@@ -90,13 +90,20 @@ Start a new session. The SessionStart hook will bootstrap the skill system autom
 
 ### Codex CLI
 
-Codex has no plugin/marketplace system, but it can consume Superpower's skills as slash-command prompts via symlinks. Run the installer once:
+Codex CLI has no plugin/marketplace system, but it has a skills system rooted at `$HOME/.agents/skills/`. Run the installer once:
 
 ```powershell
 pwsh .\scripts\codex-install.ps1
 ```
 
-It is idempotent — safe to re-run after adding skills. Skills become invocable as `/use-<skill-name>` (e.g. `/use-brainstorming`), commands as `/<command-name>`. Requires Windows Developer Mode for the symlinks.
+It is idempotent — safe to re-run after adding skills. Requires Windows Developer Mode for the symlinks. The installer creates:
+
+- **Folder symlinks** `~/.agents/skills/<skill-name>` → `skills/<skill-name>/` for each skill folder (preserves the full skill directory including `references/`, `scripts/`, etc.)
+- **File-in-folder symlinks** `~/.agents/skills/<command-name>/SKILL.md` → `commands/<command-name>.md` for flat command files
+
+After running, **restart Codex** and type `/skills` — Superpower's skills appear in the menu. You can also mention a skill inline via `$skill-name` (e.g. `$brainstorming`), or rely on Codex's auto-selection based on the skill's `description:` frontmatter.
+
+**Note:** Codex CLI does *not* support bare `/skill-name` slash commands — that's a Claude Code idiom. The slash command set on Codex is hardcoded (`/skills`, `/plan`, `/compact`, ...). User-authored skills appear only under `/skills` or via `$mention`.
 
 **Caveats under Codex:** the following skills depend on Claude Code's `Agent` tool, subagent isolation, or plan mode — they load under Codex but their tool calls may fail or degrade:
 
@@ -104,7 +111,7 @@ It is idempotent — safe to re-run after adding skills. Skills become invocable
 - `dispatching-parallel-agents`
 - `writing-plans` / `executing-plans` (the plan-mode-resume parts)
 
-The remaining 18 skills run cleanly under both CLIs. The installer also refuses to overwrite existing prompt symlinks owned by another project — collisions are reported, not silently replaced.
+The remaining 18 skills run cleanly under both CLIs. The installer also refuses to overwrite existing skill symlinks owned by another project — collisions are reported, not silently replaced (so you can run multiple installers — e.g. one per repo — without one stealing names from another).
 
 ### Verify Installation
 
